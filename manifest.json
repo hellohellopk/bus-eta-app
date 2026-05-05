@@ -1,0 +1,88 @@
+{
+  "name": "巴士到站時間",
+  "short_name": "巴士 ETA",
+  "description": "實時巴士到站時間查詢應用，支援 KMB、城巴、新巴、綠色小巴",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#ce3043",
+  "categories": ["transportation", "utilities"],
+  "screenshots": [
+    {
+      "src": "/screenshot-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "搜尋路線",
+      "short_name": "搜尋",
+      "description": "快速搜尋巴士路線",
+      "url": "/?view=search",
+      "icons": [
+        {
+          "src": "/icon-search-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "我的路線",
+      "short_name": "路線",
+      "description": "查看常用路線",
+      "url": "/?view=my-routes",
+      "icons": [
+        {
+          "src": "/icon-routes-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

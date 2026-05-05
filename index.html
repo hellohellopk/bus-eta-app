@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="巴士 ETA">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="實時巴士到站時間查詢應用，支援 KMB、城巴、新巴、綠色小巴">
+    
+    <title>🚌 巴士到站時間</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" id="manifest-link">
+    <link rel="apple-touch-icon" id="apple-touch-icon">
+    
+    <!-- 外部 CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- 第三方庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+    <!-- 頂部導航 -->
+    <div class="header">
+        <div class="header-title">🚌 巴士 ETA</div>
+        <div class="header-actions">
+            <button class="icon-btn" id="refresh-btn" title="重新整理">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M1 20v-6h6"></path>
+                    <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
+                </svg>
+            </button>
+            <button class="icon-btn" id="settings-btn" title="設定">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m3.08 3.08l4.24 4.24M1 12h6m6 0h6m-15.78 7.78l4.24-4.24m3.08-3.08l4.24-4.24"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 同步狀態 -->
+    <div id="sync-status"></div>
+    
+    <!-- 視圖容器 -->
+    <div id="view-my-routes" class="view-section">
+        <div id="my-routes-list"></div>
+        <div class="footer-actions">
+            <button class="footer-btn" id="edit-btn">✎ 編輯</button>
+            <button class="footer-btn" id="backup-btn">⬆ 備份</button>
+            <button class="footer-btn" id="restore-btn">⬇ 還原</button>
+        </div>
+    </div>
+    
+    <div id="view-search" class="view-section">
+        <div class="search-area">
+            <div class="search-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="route-input" placeholder="搜尋路線或站點" autocomplete="off">
+            </div>
+        </div>
+        <div id="search-results"></div>
+    </div>
+    
+    <div id="view-settings" class="view-section">
+        <div class="status-message">
+            <div style="font-size: 40px; margin-bottom: 16px;">⚙️</div>
+            設定功能開發中...
+        </div>
+    </div>
+    
+    <!-- 底部導航 -->
+    <div class="bottom-nav">
+        <div class="nav-item active" data-view="my-routes" title="我的路線">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 3h18v2H3V3zm0 4h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"></path>
+            </svg>
+            <span>路線</span>
+        </div>
+        <div class="nav-item" data-view="search" title="搜尋">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <span>搜尋</span>
+        </div>
+        <div class="nav-item" data-view="settings" title="設定">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m3.08 3.08l4.24 4.24M1 12h6m6 0h6m-15.78 7.78l4.24-4.24m3.08-3.08l4.24-4.24"></path>
+            </svg>
+            <span>設定</span>
+        </div>
+    </div>
+    
+    <!-- 外部 JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,751 @@
+/* ============================================
+   巴士到站時間應用 - 優化版 CSS
+   ============================================ */
+
+:root {
+    /* 主色系 */
+    --primary: #ce3043;        /* KMB 紅 */
+    --primary-light: #fde8e8;
+    --ctb-yellow: #fccc0a;     /* 城巴黃 */
+    --nlb-blue: #0072c6;       /* 大嶼山巴士藍 */
+    --gmb-green: #008f4c;      /* 綠色小巴綠 */
+    --apple-blue: #007AFF;     /* Mac 原生藍 */
+    
+    /* 淺色模式 */
+    --bg-color: #f2f2f7;
+    --card-bg: #ffffff;
+    --text-main: #1c1c1e;
+    --text-sub: #8e8e93;
+    --border-color: rgba(0,0,0,0.1);
+    
+    /* 導航高度 */
+    --nav-height: 64px;
+    
+    /* 動效時間 */
+    --transition-fast: 0.15s;
+    --transition-normal: 0.3s;
+    --transition-smooth: 0.5s;
+}
+
+/* 深色模式 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #1c1c1e;
+        --card-bg: #2c2c2e;
+        --text-main: #f5f5f7;
+        --text-sub: #a1a1a6;
+        --border-color: rgba(255,255,255,0.1);
+    }
+}
+
+/* ============================================
+   基礎樣式
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    background: var(--bg-color);
+    color: var(--text-main);
+    padding: 12px 12px 20px 12px;
+    min-height: 100vh;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.2;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* ============================================
+   頂部導航欄
+   ============================================ */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 0 4px;
+}
+
+.header-title {
+    font-size: 23px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.8px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ============================================
+   按鈕樣式
+   ============================================ */
+
+.icon-btn {
+    background: transparent;
+    color: var(--text-sub);
+    border: none;
+    padding: 4px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    user-select: none;
+}
+
+.icon-btn:hover {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+@media (prefers-color-scheme: dark) {
+    .icon-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.icon-btn:active {
+    transform: scale(0.90);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    .icon-btn:active {
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+.icon-btn:disabled {
+    opacity: 0.4;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   分頁系統
+   ============================================ */
+
+.view-section {
+    display: none;
+    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.view-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   底部導航列
+   ============================================ */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 999;
+    transition: background-color var(--transition-normal);
+}
+
+@media (prefers-color-scheme: dark) {
+    .bottom-nav {
+        background: rgba(44, 44, 46, 0.92);
+    }
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    color: var(--text-sub);
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color var(--transition-normal);
+    user-select: none;
+}
+
+.header .nav-item {
+    flex-direction: row;
+    height: auto;
+    font-size: 12px;
+    border-radius: 8px;
+    padding: 4px 10px;
+    gap: 5px;
+    flex: none;
+}
+
+.header .nav-item svg {
+    margin-bottom: 0 !important;
+    width: 15px !important;
+    height: 15px !important;
+    transform: none !important;
+}
+
+.header .nav-item.active {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--apple-blue);
+}
+
+@media (prefers-color-scheme: dark) {
+    .header .nav-item.active {
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+.nav-item svg {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 4px;
+    transition: transform var(--transition-normal);
+}
+
+.nav-item.active {
+    color: var(--apple-blue);
+}
+
+.nav-item.active svg {
+    transform: scale(1.1);
+}
+
+/* ============================================
+   卡片設計
+   ============================================ */
+
+.route-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 7px 12px;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    transition: transform var(--transition-normal), background-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+@media (prefers-color-scheme: dark) {
+    .route-card {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.route-card.clickable {
+    cursor: pointer;
+}
+
+.route-card.clickable:active {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(0.98);
+}
+
+@media (prefers-color-scheme: dark) {
+    .route-card.clickable:active {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.route-card.sortable-ghost {
+    opacity: 0.4;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+    .route-card.sortable-ghost {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.drag-handle {
+    display: none;
+    padding-right: 14px;
+    color: #c7c7cc;
+    cursor: grab;
+    transition: color var(--transition-normal);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+    color: var(--apple-blue);
+}
+
+.bus-left {
+    display: flex;
+    gap: 14px;
+    flex: 1;
+    align-items: center;
+    pointer-events: none;
+}
+
+.route-badge {
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'SF Pro Display', -apple-system, sans-serif;
+    letter-spacing: -0.5px;
+    min-width: 52px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: transform var(--transition-fast);
+}
+
+.route-badge:hover {
+    transform: scale(1.05);
+}
+
+.bg-kmb {
+    background: var(--primary);
+    color: #fff;
+}
+
+.bg-ctb {
+    background: var(--ctb-yellow);
+    color: #111;
+}
+
+.bg-nlb {
+    background: var(--nlb-blue);
+    color: #fff;
+}
+
+.bg-gmb {
+    background: var(--gmb-green);
+    color: #fff;
+}
+
+.bg-joint {
+    background: var(--primary);
+    color: #fff;
+    border-left: 6px solid var(--ctb-yellow);
+}
+
+.route-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+}
+
+.destination {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-main);
+    letter-spacing: -0.4px;
+}
+
+.station-name-sub {
+    font-size: 12px;
+    color: var(--text-sub);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 300;
+}
+
+.station-name-sub svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+/* ============================================
+   ETA 時間區塊
+   ============================================ */
+
+.eta-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+    min-width: 65px;
+    pointer-events: none;
+}
+
+.eta-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.eta-primary {
+    font-size: 13px !important;
+    color: var(--text-main);
+    font-weight: 400;
+}
+
+.eta-primary strong {
+    font-size: 13px !important;
+    font-family: 'SF Pro Display', -apple-system, sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.eta-secondary {
+    font-size: 13px !important;
+    color: var(--text-sub);
+    font-weight: 300;
+}
+
+.eta-secondary strong {
+    font-size: 13px !important;
+    font-family: 'SF Pro Display', -apple-system, sans-serif;
+}
+
+.no-data {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.arriving-kmb {
+    color: var(--primary);
+}
+
+.arriving-ctb {
+    color: #d4aa00;
+}
+
+.arriving-nlb {
+    color: var(--nlb-blue);
+}
+
+.arriving-gmb {
+    color: var(--gmb-green);
+}
+
+/* ============================================
+   編輯模式
+   ============================================ */
+
+.delete-route-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ff3b30;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.delete-route-btn:active {
+    transform: translateY(-50%) scale(0.9);
+    background: #ff453a;
+}
+
+.edit-mode .drag-handle {
+    display: block;
+    pointer-events: auto;
+}
+
+.edit-mode .delete-route-btn {
+    display: flex;
+}
+
+.edit-mode .eta-list {
+    display: none;
+}
+
+.edit-mode .bus-left {
+    padding-right: 40px;
+}
+
+/* ============================================
+   搜尋區塊
+   ============================================ */
+
+.search-area {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 4px 0 12px 0;
+    background: var(--bg-color);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-color);
+    transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+}
+
+.search-box:focus-within {
+    box-shadow: 0 4px 20px rgba(0, 122, 255, 0.15);
+    border-color: rgba(0, 122, 255, 0.3);
+}
+
+.search-box svg {
+    color: var(--text-sub);
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 17px;
+    flex: 1;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.search-box input::placeholder {
+    color: #c7c7cc;
+}
+
+.search-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sub);
+    margin: 7px 0 4px 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.result-item {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.result-item:active {
+    background: rgba(0, 0, 0, 0.05);
+    transform: scale(0.98);
+}
+
+@media (prefers-color-scheme: dark) {
+    .result-item:active {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.result-item-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.result-route-num {
+    font-size: 17px;
+    font-weight: 800;
+    width: 56px;
+    font-family: 'SF Pro Display';
+}
+
+.result-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.result-dest {
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    color: var(--text-main);
+}
+
+.result-meta {
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 500;
+}
+
+/* ============================================
+   同步指示器
+   ============================================ */
+
+#sync-status {
+    font-size: 11px;
+    color: var(--apple-blue);
+    font-weight: 600;
+    padding: 0 8px;
+    margin-bottom: 8px;
+    display: none;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+/* ============================================
+   備份/還原按鈕
+   ============================================ */
+
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+    padding-bottom: 20px;
+}
+
+.footer-btn {
+    background: var(--card-bg);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--apple-blue);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: background-color var(--transition-normal), transform var(--transition-fast);
+}
+
+.footer-btn:active {
+    transform: scale(0.95);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+    .footer-btn {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .footer-btn:active {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.status-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-sub);
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* ============================================
+   無障礙設計
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   響應式設計
+   ============================================ */
+
+@media (max-width: 480px) {
+    body {
+        padding: 8px 8px 20px 8px;
+    }
+    
+    .header-title {
+        font-size: 20px;
+    }
+    
+    .destination {
+        font-size: 14px;
+    }
+}
+
+/* ============================================
+   列印樣式
+   ============================================ */
+
+@media print {
+    .header-actions,
+    .bottom-nav,
+    .footer-actions,
+    .search-area {
+        display: none;
+    }
+}
